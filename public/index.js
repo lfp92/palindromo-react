@@ -1,47 +1,45 @@
 const { Fragment, useState, useEffect } = React;
 
-const Header = ({ setList }) => (
-  <header className="header">
-    <h4>Verificador de palíndromos</h4>
-    <Button setList={setList} />
-  </header>
-);
+function Header(props) {
+  return (
+    <header className="header">
+      <h4>Verificador de palíndromos</h4>
+      <Button setList={props.setList} />
+    </header>
+  );
+}
 
-const Button = ({
-  label = "Apagar histórico",
-  dataTest = "limpar-dados",
-  setList
-}) => (
-  <button
-    onClick={e => setList([])}
-    data-test={dataTest}
-    className="btnApagarHistorico"
-  >
-    {label}
-  </button>
-);
+function Button(props) {
+  return (
+    <button
+      onClick={e => props.setList([])}
+      data-test={props.dataTest || "limpar-dados"}
+      className="btnApagarHistorico"
+    >
+      {props.label || "Apagar histórico"}
+    </button>
+  );
+}
 
-const removeSpaces = value =>
-  Array.from(value.toLowerCase()).reduce((x, y) => x + y.trim());
+function checkPalindrome(value) {
+  const semEspaco = value.replace(/ /g, "");
+  if (Array.from(semEspaco).join("") === Array.from(semEspaco).reverse().join("")) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-const checkPalindrome = value => {
-  let reverseValue = Array.from(value)
-    .reverse()
-    .reduce((x, y) => x + y);
-  let isPalindrome =
-    removeSpaces(reverseValue) === removeSpaces(value) ? true : false;
-  return isPalindrome;
-};
-const Input = ({ addToList }) => {
+function Input(props) {
   let [value, setValue] = useState("");
 
-  const handleInput = event => {
+  function handleInput(event) {
     if (event.key !== "Enter") return;
     if (value.trim() === "") return;
 
-    addToList({ text: value, isPalindrome: checkPalindrome(value) });
+    props.addToList({ text: value, isPalindrome: checkPalindrome(value) });
     setValue("");
-  };
+  }
 
   return (
     <div className="pad">
@@ -55,16 +53,18 @@ const Input = ({ addToList }) => {
       ></input>
     </div>
   );
-};
+}
 
-const Main = ({ list, setList }) => {
-  const addToList = newItem => setList([newItem, ...list]);
+function Main(props) {
+  function addToList(newItem) {
+    props.setList([newItem, ...props.list]);
+  }
 
   return (
     <main className="app">
       <Input addToList={addToList} />
       <Table>
-        {list.map((item, index) => (
+        {props.list.map((item, index) => (
           <TableRowData
             key={index}
             text={item.text}
@@ -74,30 +74,34 @@ const Main = ({ list, setList }) => {
       </Table>
     </main>
   );
-};
+}
 
-const TableRowData = ({ text, isPalindrome }) => (
-  <tr className="trowbody">
-    <td>{text}</td>
-    <td data-verificado={isPalindrome ? "positivo" : "negativo"}>
-      {isPalindrome ? "sim" : "não"}
-    </td>
-  </tr>
-);
+function TableRowData(props) {
+  return (
+    <tr className="trowbody">
+      <td>{props.text}</td>
+      <td data-verificado={props.isPalindrome ? "positivo" : "negativo"}>
+        {props.isPalindrome ? "sim" : "não"}
+      </td>
+    </tr>
+  );
+}
 
-const Table = ({ children = null }) => (
-  <table className="table">
-    <thead>
-      <tr className="trowhead">
-        <th>Frase</th>
-        <th>Palíndromo</th>
-      </tr>
-    </thead>
-    <tbody className="tablebody">{children}</tbody>
-  </table>
-);
+function Table(props) {
+  return (
+    <table className="table">
+      <thead>
+        <tr className="trowhead">
+          <th>Frase</th>
+          <th>Palíndromo</th>
+        </tr>
+      </thead>
+      <tbody className="tablebody">{props.children}</tbody>
+    </table>
+  );
+}
 
-const App = () => {
+function App() {
   let [list, setList] = useState([]);
   return (
     <Fragment>
@@ -105,6 +109,6 @@ const App = () => {
       <Main list={list} setList={setList} />
     </Fragment>
   );
-};
+}
 
 ReactDOM.render(<App />, document.querySelector("#root"));
