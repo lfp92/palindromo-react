@@ -1,0 +1,59 @@
+body {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: Calibri;
+  justify-content: center;
+}
+
+.header {
+  align-items: center;
+  background-color: #ebebeb;
+  border: 1px solid #d2d2d2;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  display: flex;
+  height: 50px;
+  justify-content: space-around;
+  width: 400px;
+}
+.header button {
+  background-color: #ebebeb;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+.header button:hover {
+  background-color: #f8f8f8;
+}
+
+.app {
+  width: 400px;
+  border: 1px solid #d2d2d2;
+}
+.app .pad {
+  padding: 10px;
+  display: flex;
+}
+.app .inputPalindromo {
+  height: 30px;
+  padding: 10px;
+  width: 100%;
+}
+.app .table {
+  border-top: 1px solid #d2d2d2;
+  border-collapse: collapse;
+  width: 100%;
+}
+.app .table .trowhead,
+.app .table .trowbody {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+.app .table .trowbody:nth-child(odd) {
+  background-color: #ccc;
+}
+
+/*# sourceMappingURL=style.css.map */
